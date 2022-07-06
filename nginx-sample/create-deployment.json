@@ -1,0 +1,21 @@
+{
+  "applicationName": "BlueGreenPipelineStack-EcsBlueGreenPipelineecsApplicationA7594419-1D1882SLNUPGI",
+  "deploymentGroupName": "nginx-sample",
+  "revision": {
+    "revisionType": "S3",
+    "s3Location": {
+      "bucket": "blue-green-azure-demo",
+      "key": "BUILD_ID/appspec.yaml",
+      "bundleType": "YAML"
+    }
+  },
+  "ignoreApplicationStopFailures": false,
+  "autoRollbackConfiguration": {
+    "enabled": true,
+    "events": [
+      "DEPLOYMENT_FAILURE",
+      "DEPLOYMENT_STOP_ON_ALARM",
+      "DEPLOYMENT_STOP_ON_REQUEST"
+    ]
+  }
+}

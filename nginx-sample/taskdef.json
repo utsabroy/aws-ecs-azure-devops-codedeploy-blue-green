@@ -1,0 +1,35 @@
+{
+  "containerDefinitions": [
+    {
+      "name": "nginx-sample",
+      "image": "REPOSITORY_URI:IMAGE_TAG",
+      "portMappings": [
+        {
+          "containerPort": 80,
+          "protocol": "tcp"
+        }
+      ],
+      "essential": true,
+      "dockerLabels": {
+        "name": "nginx-sample"
+      },
+      "logConfiguration": {
+        "logDriver": "awslogs",
+        "options": {
+          "awslogs-group": "/ecs/nginx-sample",
+          "awslogs-region": "AWS_REGION",
+          "awslogs-stream-prefix": "nginx-sample"
+        }
+      }
+    }
+  ],
+  "taskRoleArn": "arn:aws:iam::879494237022:role/BlueGreenContainerImageSt-EcsBlueGreenRolesecsTask-89FP0FV3H33Z",
+  "executionRoleArn": "arn:aws:iam::879494237022:role/BlueGreenContainerImageSt-EcsBlueGreenRolesecsTask-89FP0FV3H33Z",
+  "family": "nginx-sample",
+  "networkMode": "awsvpc",
+  "requiresCompatibilities": [
+    "FARGATE"
+  ],
+  "cpu": "256",
+  "memory": "1024"
+}

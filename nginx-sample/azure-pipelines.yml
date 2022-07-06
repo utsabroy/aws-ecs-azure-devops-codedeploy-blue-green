@@ -1,0 +1,92 @@
+# Docker
+# Build a Docker image
+# https://docs.microsoft.com/azure/devops/pipelines/languages/docker
+
+trigger:
+- main
+
+resources:
+- repo: self
+
+variables:
+  - group: AWS
+  - name: tag
+    value: $(Build.SourceVersion)
+
+stages:
+- stage: Build
+  displayName: Build & Deploy
+  jobs:
+  - job: Build
+    displayName: Build
+    pool:
+      vmImage: ubuntu-latest
+    steps:
+    - task: Docker@2
+      displayName: Build Docker Image
+      inputs:
+        command: build
+        buildContext: '$(System.DefaultWorkingDirectory)'
+        dockerfile: '$(Build.SourcesDirectory)/Dockerfile'
+        repository: $(AWS_ECR_IMAGE_URI)
+        tags: $(tag)
+    - task: ECRPushImage@1
+      displayName: Push to ECR
+      inputs:
+        awsCredentials: 'AWS'
+        regionName: $(AWS_REGION)
+        imageSource: 'imagename'
+        sourceImageName: $(AWS_ECR_IMAGE_URI)
+        sourceImageTag: $(tag)
+        pushTag:  $(tag)
+        repositoryName: $(AWS_ECR_REPOSITORY_NAME)
+    - task: Bash@3
+      displayName: Update task definition & appspec
+      inputs:
+        targetType: inline
+        script: |
+          # Update Task Definition
+          echo Update the REPOSITORY_URI:IMAGE_TAG in task definition...
+          sed -i 's@REPOSITORY_URI@'$(AWS_ECR_IMAGE_URI)'@g' taskdef.json
+          sed -i 's@IMAGE_TAG@'$(tag)'@g' taskdef.json
+          echo update the REGION in task definition...
+          sed -i 's@AWS_REGION@'$(AWS_REGION)'@g' taskdef.json
+
+          # Register Task Definition
+          export TASK_DEFINITION_OUTPUT=$(aws ecs register-task-definition --family  nginx-sample --cli-input-json file://taskdef.json )
+          echo "Task Definition Output =>" $TASK_DEFINITION_OUTPUT
+          export TASK_DEFINITION_ARN=$(echo $TASK_DEFINITION_OUTPUT | jq -r '.taskDefinition.taskDefinitionArn')
+          echo "Registered ECS Task Definition Arn: " $TASK_DEFINITION_ARN
+          
+          # Update AppSpec
+          echo Updating appsec.yaml with Task Definition Arn: $TASK_DEFINITION_ARN
+          sed -i 's@TASK_DEFINITION@'$TASK_DEFINITION_ARN'@g' appspec.yaml
+
+          # Update Create Deployment
+          sed -i 's@BUILD_ID@'$(Build.BuildId)'@g' create-deployment.json 
+      env:
+        AWS_ACCESS_KEY_ID: $(AWS_ACCESS_KEY_ID)
+        AWS_SECRET_ACCESS_KEY: $(AWS_SECRET_ACCESS_KEY)
+        AWS_DEFAULT_REGION: $(AWS_REGION)
+    - task: S3Upload@1
+      displayName: Upload AppSpec
+      inputs:
+        awsCredentials: 'AWS'
+        regionName: $(AWS_REGION)
+        bucketName: blue-green-azure-demo
+        targetFolder: $(Build.BuildId)
+        globExpressions: 'appspec.yaml'
+    - task: AWSCLI@1
+      displayName: CodeDeploy Deploy
+      inputs:
+        awsCredentials: 'AWS'
+        regionName: $(AWS_REGION)
+        awsCommand: 'deploy'
+        awsSubCommand: 'create-deployment'
+        awsArguments: '--cli-input-json file://create-deployment.json'
+
+
+      
+        
+
+      
