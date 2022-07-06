@@ -27,7 +27,7 @@ stages:
       inputs:
         command: build
         buildContext: '$(System.DefaultWorkingDirectory)'
-        dockerfile: '$(Build.SourcesDirectory)/Dockerfile'
+        dockerfile: '$(Build.SourcesDirectory)/nginx-sample/Dockerfile'
         repository: $(AWS_ECR_IMAGE_URI)
         tags: $(tag)
     - task: ECRPushImage@1
@@ -48,22 +48,22 @@ stages:
           # Update Task Definition
           echo Update the REPOSITORY_URI:IMAGE_TAG in task definition...
           sed -i 's@REPOSITORY_URI@'$(AWS_ECR_IMAGE_URI)'@g' taskdef.json
-          sed -i 's@IMAGE_TAG@'$(tag)'@g' taskdef.json
+          sed -i 's@IMAGE_TAG@'$(tag)'@g' nginx-sample/taskdef.json
           echo update the REGION in task definition...
-          sed -i 's@AWS_REGION@'$(AWS_REGION)'@g' taskdef.json
+          sed -i 's@AWS_REGION@'$(AWS_REGION)'@g' nginx-sample/taskdef.json
 
           # Register Task Definition
-          export TASK_DEFINITION_OUTPUT=$(aws ecs register-task-definition --family  nginx-sample --cli-input-json file://taskdef.json )
+          export TASK_DEFINITION_OUTPUT=$(aws ecs register-task-definition --family  nginx-sample --cli-input-json file://nginx-sample/taskdef.json )
           echo "Task Definition Output =>" $TASK_DEFINITION_OUTPUT
           export TASK_DEFINITION_ARN=$(echo $TASK_DEFINITION_OUTPUT | jq -r '.taskDefinition.taskDefinitionArn')
           echo "Registered ECS Task Definition Arn: " $TASK_DEFINITION_ARN
           
           # Update AppSpec
           echo Updating appsec.yaml with Task Definition Arn: $TASK_DEFINITION_ARN
-          sed -i 's@TASK_DEFINITION@'$TASK_DEFINITION_ARN'@g' appspec.yaml
+          sed -i 's@TASK_DEFINITION@'$TASK_DEFINITION_ARN'@g' nginx-sample/appspec.yaml
 
           # Update Create Deployment
-          sed -i 's@BUILD_ID@'$(Build.BuildId)'@g' create-deployment.json 
+          sed -i 's@BUILD_ID@'$(Build.BuildId)'@g' nginx-sample/create-deployment.json 
       env:
         AWS_ACCESS_KEY_ID: $(AWS_ACCESS_KEY_ID)
         AWS_SECRET_ACCESS_KEY: $(AWS_SECRET_ACCESS_KEY)
@@ -83,7 +83,7 @@ stages:
         regionName: $(AWS_REGION)
         awsCommand: 'deploy'
         awsSubCommand: 'create-deployment'
-        awsArguments: '--cli-input-json file://create-deployment.json'
+        awsArguments: '--cli-input-json file://nginx-sample/create-deployment.json'
 
 
       
