@@ -1,5 +1,5 @@
 {
-  "applicationName": "BlueGreenPipelineStack-EcsBlueGreenPipelineecsApplicationA7594419-1D1882SLNUPGI",
+  "applicationName": "CODE_DEPLOY_APPLICATION_NAME",
   "deploymentGroupName": "nginx-sample",
   "revision": {
     "revisionType": "S3",
