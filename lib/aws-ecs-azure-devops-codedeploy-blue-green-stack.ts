@@ -43,7 +43,7 @@ export class AwsEcsAzureDevopsCodedeployBlueGreenStack extends Stack {
           apiName: apiName.valueAsString,
           containerPort: containerPort.valueAsNumber,
           deploymentConfigName: deploymentConfigName.valueAsString,
-          appDir: process.env.APP_DIR || '../../nginix-sample',
+          appDir: process.env.APP_DIR || '../../', // Location of Dockerfile w.r.t to ecr.ts file
           taskSetTerminationTimeInMinutes: taskSetTerminationTimeInMinutes.valueAsNumber
       })
   }

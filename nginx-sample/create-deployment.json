@@ -1,6 +1,6 @@
 {
   "applicationName": "CODE_DEPLOY_APPLICATION_NAME",
-  "deploymentGroupName": "nginx-sample",
+  "deploymentGroupName": "CODE_DEPLOY_GROUP_NAME",
   "revision": {
     "revisionType": "S3",
     "s3Location": {

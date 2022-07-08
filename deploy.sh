@@ -1,4 +1,4 @@
-export APP_DIR='../../nginx-sample'
+export APP_DIR='../../' # Location of Dockerfile w.r.t to ecr.ts file
 export CIDR_RANGE=10.27.0.0/16
 
 export AWS_ACCOUNT_ID=$(aws sts get-caller-identity --query Account --output text)

@@ -6,7 +6,6 @@ import iam = require('aws-cdk-lib/aws-iam');
 import { EcsDeploymentConfig, IEcsDeploymentGroup } from "aws-cdk-lib/aws-codedeploy";
 
 export interface EcsBlueGreenCodeDeployProps {
-    readonly deploymentGroupName: string;
     readonly deploymentConfigName: string;
     readonly terminationWaitTime: number;
     readonly blueTargetGroupName: string;
@@ -55,7 +54,6 @@ export class EcsBlueGreenCodeDeploy extends Construct {
               },
             },
             deploymentConfigName: EcsDeploymentConfig.fromEcsDeploymentConfigName(this, "ecsDeploymentConfig", props.deploymentConfigName!).deploymentConfigName,
-            deploymentGroupName: props.deploymentGroupName,
             deploymentStyle: {
               deploymentOption: "WITH_TRAFFIC_CONTROL",
               deploymentType: "BLUE_GREEN",

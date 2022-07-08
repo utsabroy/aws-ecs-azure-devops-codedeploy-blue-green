@@ -27,7 +27,7 @@ stages:
       inputs:
         command: build
         buildContext: '$(System.DefaultWorkingDirectory)'
-        dockerfile: '$(Build.SourcesDirectory)/nginx-sample/Dockerfile'
+        dockerfile: '$(Build.SourcesDirectory)/Dockerfile'
         repository: $(AWS_ECR_IMAGE_URI)
         tags: $(tag)
     - task: ECRPushImage@1
@@ -61,10 +61,11 @@ stages:
           # Update AppSpec
           echo Updating appsec.yaml with Task Definition Arn: $TASK_DEFINITION_ARN
           sed -i 's@TASK_DEFINITION@'$TASK_DEFINITION_ARN'@g' nginx-sample/appspec.yaml
-
+          
           # Update Create Deployment
           sed -i 's@BUILD_ID@'$(Build.BuildId)'@g' nginx-sample/create-deployment.json 
           sed -i 's@CODE_DEPLOY_APPLICATION_NAME@'$(AWS_CODE_DEPLOY_APPLICATION_NAME)'@g' nginx-sample/create-deployment.json 
+          sed -i 's@CODE_DEPLOY_GROUP_NAME@'$(AWS_CODE_DEPLOY_APPLICATION_NAME)'@g' nginx-sample/create-deployment.json 
       env:
         AWS_ACCESS_KEY_ID: $(AWS_ACCESS_KEY_ID)
         AWS_SECRET_ACCESS_KEY: $(AWS_SECRET_ACCESS_KEY)

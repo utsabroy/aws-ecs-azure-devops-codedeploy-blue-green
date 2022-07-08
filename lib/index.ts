@@ -71,7 +71,6 @@ export class EcsBlueGreen extends Construct {
             greenTargetGroupName: ecsBlueGreenService.greenTargetGroup.targetGroupName,
             terminationWaitTime: props.taskSetTerminationTimeInMinutes,
             deploymentConfigName: props.deploymentConfigName,
-            deploymentGroupName: props.apiName,
             targetGroupAlarms: ecsServiceAlarms.targetGroupAlarms
         });
 
