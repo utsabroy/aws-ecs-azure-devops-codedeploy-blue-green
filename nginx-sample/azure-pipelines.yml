@@ -75,7 +75,7 @@ stages:
       inputs:
         awsCredentials: 'AWS'
         regionName: $(AWS_REGION)
-        bucketName: blue-green-azure-demo
+        bucketName: $(AWS_ARTIFACT_BUCKET_NAME)
         targetFolder: $(Build.BuildId)
         globExpressions: 'appspec.yaml'
     - task: AWSCLI@1

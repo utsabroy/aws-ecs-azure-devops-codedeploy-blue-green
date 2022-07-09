@@ -13,6 +13,7 @@ import { EcsBlueGreenRoles } from './common/roles';
 import { EcsServiceAlarms } from './ecs/alarms';
 import { EcsBlueGreenCodeDeploy } from './codedeploy/codedeploy';
 import { EcsBlueGreenArtifactBucket } from './s3/artifact-bucket'
+import { AzureDevopsUser } from './common/azure-devops-user'
 
 export interface EcsBlueGreenProps {
     readonly vpcCidr: string,    
@@ -61,8 +62,11 @@ export class EcsBlueGreen extends Construct {
             apiName: props.apiName
         });
 
+        // create artifact bucket
+        const azureArtifactBucket = new EcsBlueGreenArtifactBucket(this, 'azureArtfiactBucker');
+
         // create CodeDeploy with Blue Green config
-        const ecsBlueGreenDeploymentGroup = new EcsBlueGreenCodeDeploy(this, 'ecsApplication', {
+        const ecsBlueGreenDeployment = new EcsBlueGreenCodeDeploy(this, 'ecsApplication', {
             ecsClusterName: ecsBlueGreenCluster.cluster.clusterName,
             ecsServiceName: ecsBlueGreenService.ecsService.serviceName,
             prodListenerArn: ecsBlueGreenService.albProdListener.listenerArn,
@@ -71,24 +75,60 @@ export class EcsBlueGreen extends Construct {
             greenTargetGroupName: ecsBlueGreenService.greenTargetGroup.targetGroupName,
             terminationWaitTime: props.taskSetTerminationTimeInMinutes,
             deploymentConfigName: props.deploymentConfigName,
-            targetGroupAlarms: ecsServiceAlarms.targetGroupAlarms
+            targetGroupAlarms: ecsServiceAlarms.targetGroupAlarms,
+            artifactBucketArn: azureArtifactBucket.artifactsBucket.bucketArn
         });
 
-        // create artifact bucket
-        const azureArtifactBucket = new EcsBlueGreenArtifactBucket(this, 'AzureArtfiactBucker');
+        // crreate Azure Devops User
+        const azureDevUser = new AzureDevopsUser(this, 'azureDevopsUser', {
+            artifactBucket: azureArtifactBucket.artifactsBucket,
+            codeDeployApplication: ecsBlueGreenDeployment.ecsApplication,
+            codeDeployRole: ecsBlueGreenDeployment.codeDeployServiceRole,
+            ecrRepo: ecrRepository.ecrRepo
+        });
 
 
         // Export the outputs
         new CfnOutput(this, 'ecsBlueGreenLBDns', {
             description: 'Load balancer DNS',
-            exportName: 'ecsBlueGreenLBDns',
+            exportName: 'loadBalancerDns',
             value: ecsBlueGreenService.alb.loadBalancerDnsName
         });
 
         new CfnOutput(this, 'ecrRepoName', {
             description: 'ECR repository name',
-            exportName: 'ecrRepoName',
+            exportName: 'ecsRepositoryName',
             value: ecrRepository.ecrRepo.repositoryName
+        });
+
+        new CfnOutput(this, 'ecrRepoUri', {
+            description: 'ECR repository uri',
+            exportName: 'ecsRepositoryUri',
+            value: ecrRepository.ecrRepo.repositoryUri
+        });
+
+        new CfnOutput(this, 'codeDeployApplicationName', {
+            description: 'CodeDeploy ECS CodeDeploy Application Name',
+            exportName: 'codeDeployApplicationName',
+            value: ecsBlueGreenDeployment.ecsApplication.applicationName
+        });
+
+        new CfnOutput(this, 'codeDeployGroupName', {
+            description: 'CodeDeploy ECS CodeDeploy Application Name',
+            exportName: 'codeDeployGroupName',
+            value: ecsBlueGreenDeployment.ecsDeploymentGroupName
+        });
+
+        new CfnOutput(this, 'artifactBucketName', {
+            description: 'S3 Bucket where Azure Devops will push artifacts',
+            exportName: 'artifactBucketName',
+            value: azureArtifactBucket.artifactsBucket.bucketName
+        });
+
+        new CfnOutput(this, 'azureDevOpsUser', {
+            description: 'Azure Devops User whose credentials will be used to deploy the application',
+            exportName: 'azureDevopsUser',
+            value: azureDevUser.azureDevopsUser.userArn
         });
 
     }
