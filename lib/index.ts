@@ -87,6 +87,12 @@ export class EcsBlueGreen extends Construct {
         });
 
         // Export the outputs
+        new CfnOutput(this, 'apiName', {
+            description: 'Name of the blue green service',
+            exportName: 'apiName',
+            value: props.apiName
+        });
+
         new CfnOutput(this, 'ecsBlueGreenLBDns', {
             description: 'Load balancer DNS',
             exportName: 'loadBalancerDns',
@@ -101,7 +107,7 @@ export class EcsBlueGreen extends Construct {
 
         new CfnOutput(this, 'ecrTaskRoleArn', {
             description: 'ECR Task Role Arn',
-            exportName: 'ecrTaskRoleArn',
+            exportName: 'ecsTaskRoleArn',
             value: ecsTaskRole.ecsTaskRole.roleArn
         });
 

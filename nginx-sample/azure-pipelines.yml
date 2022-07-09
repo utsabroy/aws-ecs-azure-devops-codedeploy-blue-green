@@ -49,6 +49,7 @@ stages:
           echo Update the REPOSITORY_URI:IMAGE_TAG in task definition...
           sed -i 's@REPOSITORY_URI@'$(AWS_ECR_IMAGE_URI)'@g' nginx-sample/taskdef.json
           sed -i 's@IMAGE_TAG@'$(tag)'@g' nginx-sample/taskdef.json
+          sed -i 's@API_NAME@'$(AWS_SERVICE_NAME)'@g' nginx-sample/taskdef.json
           sed -i 's@AWS_REGION@'$(AWS_REGION)'@g' nginx-sample/taskdef.json
           sed -i 's@TASK_ROLE@'$(AWS_ECS_TASK_ROLE_ARN)'@g' nginx-sample/taskdef.json
 

@@ -1,7 +1,7 @@
 {
   "containerDefinitions": [
     {
-      "name": "nginx-sample",
+      "name": "API_NAME",
       "image": "REPOSITORY_URI:IMAGE_TAG",
       "portMappings": [
         {
@@ -11,21 +11,21 @@
       ],
       "essential": true,
       "dockerLabels": {
-        "name": "nginx-sample"
+        "name": "API_NAME"
       },
       "logConfiguration": {
         "logDriver": "awslogs",
         "options": {
-          "awslogs-group": "/ecs/nginx-sample",
+          "awslogs-group": "/ecs/API_NAME",
           "awslogs-region": "AWS_REGION",
-          "awslogs-stream-prefix": "nginx-sample"
+          "awslogs-stream-prefix": "API_NAME"
         }
       }
     }
   ],
   "taskRoleArn": "TASK_ROLE",
   "executionRoleArn": "TASK_ROLE",
-  "family": "nginx-sample",
+  "family": "API_NAME",
   "networkMode": "awsvpc",
   "requiresCompatibilities": [
     "FARGATE"
