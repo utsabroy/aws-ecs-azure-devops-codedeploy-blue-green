@@ -23,8 +23,8 @@
       }
     }
   ],
-  "taskRoleArn": "arn:aws:iam::879494237022:role/BlueGreenContainerImageSt-EcsBlueGreenRolesecsTask-89FP0FV3H33Z",
-  "executionRoleArn": "arn:aws:iam::879494237022:role/BlueGreenContainerImageSt-EcsBlueGreenRolesecsTask-89FP0FV3H33Z",
+  "taskRoleArn": "TASK_ROLE",
+  "executionRoleArn": "TASK_ROLE",
   "family": "nginx-sample",
   "networkMode": "awsvpc",
   "requiresCompatibilities": [

@@ -49,8 +49,8 @@ stages:
           echo Update the REPOSITORY_URI:IMAGE_TAG in task definition...
           sed -i 's@REPOSITORY_URI@'$(AWS_ECR_IMAGE_URI)'@g' taskdef.json
           sed -i 's@IMAGE_TAG@'$(tag)'@g' nginx-sample/taskdef.json
-          echo update the REGION in task definition...
           sed -i 's@AWS_REGION@'$(AWS_REGION)'@g' nginx-sample/taskdef.json
+          sed -i 's@TASK_ROLE@'$(AWS_ECS_TASK_ROLE_ARN)'@g' nginx-sample/taskdef.json
 
           # Register Task Definition
           export TASK_DEFINITION_OUTPUT=$(aws ecs register-task-definition --family  nginx-sample --cli-input-json file://nginx-sample/taskdef.json )

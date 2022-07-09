@@ -8,7 +8,7 @@ import { Construct } from "constructs";
 interface AzureDevopsPolicyProps {
   readonly artifactBucket: IBucket;
   readonly ecrRepo: IRepository;
-  readonly codeDeployRole: IRole;
+  readonly ecsTaskRoleArn: IRole;
 }
 
 export class AzureDevopsUser extends Construct {
@@ -93,7 +93,7 @@ export class AzureDevopsUser extends Construct {
           'iam:PassRole'
       ],
       resources: [
-          props.codeDeployRole.roleArn
+          props.ecsTaskRoleArn.roleArn
       ],
     });
 

@@ -82,10 +82,9 @@ export class EcsBlueGreen extends Construct {
         // crreate Azure Devops User
         const azureDevUser = new AzureDevopsUser(this, 'azureDevopsUser', {
             artifactBucket: azureArtifactBucket.artifactsBucket,
-            codeDeployRole: ecsBlueGreenDeployment.codeDeployServiceRole,
+            ecsTaskRoleArn: ecsTaskRole.ecsTaskRole,
             ecrRepo: ecrRepository.ecrRepo
         });
-
 
         // Export the outputs
         new CfnOutput(this, 'ecsBlueGreenLBDns', {
@@ -98,6 +97,12 @@ export class EcsBlueGreen extends Construct {
             description: 'ECR repository name',
             exportName: 'ecsRepositoryName',
             value: ecrRepository.ecrRepo.repositoryName
+        });
+
+        new CfnOutput(this, 'ecrTaskRoleArn', {
+            description: 'ECR Task Role Arn',
+            exportName: 'ecrTaskRoleArn',
+            value: ecsTaskRole.ecsTaskRole.roleArn
         });
 
         new CfnOutput(this, 'ecrRepoUri', {
