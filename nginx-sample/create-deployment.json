@@ -4,7 +4,7 @@
   "revision": {
     "revisionType": "S3",
     "s3Location": {
-      "bucket": "blue-green-azure-demo",
+      "bucket": "ARTIFACT_BUCKET",
       "key": "BUILD_ID/appspec.yaml",
       "bundleType": "YAML"
     }

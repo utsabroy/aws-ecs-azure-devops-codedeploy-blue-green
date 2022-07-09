@@ -18,18 +18,6 @@ export class EcsBlueGreenArtifactBucket extends Construct {
         });
 
         // S3 bucket policy for the code pipeline artifacts
-        const denyUnEncryptedObjectUploads = new iam.PolicyStatement({
-            effect: Effect.DENY,
-            actions: ['s3:PutObject'],
-            principals: [new AnyPrincipal()],
-            resources: [this.artifactsBucket.bucketArn.concat('/*')],
-            conditions: {
-                StringNotEquals: {
-                    's3:x-amz-server-side-encryption': 'aws:kms'
-                }
-            }
-        });
-
         const denyInsecureConnections = new iam.PolicyStatement({
             effect: Effect.DENY,
             actions: ['s3:*'],
@@ -42,7 +30,7 @@ export class EcsBlueGreenArtifactBucket extends Construct {
             }
         });
 
-        this.artifactsBucket.addToResourcePolicy(denyUnEncryptedObjectUploads);
+        //this.artifactsBucket.addToResourcePolicy(denyUnEncryptedObjectUploads);
         this.artifactsBucket.addToResourcePolicy(denyInsecureConnections);
     }
 
