@@ -82,7 +82,6 @@ export class EcsBlueGreen extends Construct {
         // crreate Azure Devops User
         const azureDevUser = new AzureDevopsUser(this, 'azureDevopsUser', {
             artifactBucket: azureArtifactBucket.artifactsBucket,
-            codeDeployApplication: ecsBlueGreenDeployment.ecsApplication,
             codeDeployRole: ecsBlueGreenDeployment.codeDeployServiceRole,
             ecrRepo: ecrRepository.ecrRepo
         });

@@ -35,6 +35,7 @@ export class EcsBlueGreenCodeDeploy extends Construct {
             assumedBy: new ServicePrincipal('codedeploy.amazonaws.com')
         });
         this.codeDeployServiceRole.addManagedPolicy(ManagedPolicy.fromAwsManagedPolicyName('AWSCodeDeployRoleForECS'));
+        this.codeDeployServiceRole.addManagedPolicy(ManagedPolicy.fromAwsManagedPolicyName('AmazonS3ReadOnlyAccess'));
 
         const codeDeploymentConfig = EcsDeploymentConfig.fromEcsDeploymentConfigName(this, "ecsDeploymentConfig", props.deploymentConfigName)
         

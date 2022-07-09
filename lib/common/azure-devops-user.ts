@@ -8,7 +8,6 @@ import { Construct } from "constructs";
 interface AzureDevopsPolicyProps {
   readonly artifactBucket: IBucket;
   readonly ecrRepo: IRepository;
-  readonly codeDeployApplication: IEcsApplication;
   readonly codeDeployRole: IRole;
 }
 
@@ -28,7 +27,7 @@ export class AzureDevopsUser extends Construct {
         "codedeploy:GetDeploymentConfig",
         "codedeploy:RegisterApplicationRevision",
       ],
-      resources: [props.codeDeployApplication.applicationArn],
+      resources: ['*'],
     });
 
     const ecrPushPolicy = new iam.PolicyStatement({

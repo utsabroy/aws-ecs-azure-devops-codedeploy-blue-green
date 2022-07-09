@@ -77,6 +77,7 @@ stages:
         regionName: $(AWS_REGION)
         bucketName: $(AWS_ARTIFACT_BUCKET_NAME)
         targetFolder: $(Build.BuildId)
+        sourceFolder: 'nginx-sample'
         globExpressions: 'appspec.yaml'
     - task: AWSCLI@1
       displayName: CodeDeploy Deploy

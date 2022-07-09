@@ -13,6 +13,6 @@ Resources:
 Hooks:
 #  - BeforeInstall: "LambdaFunctionToValidateBeforeInstall"
 #  - AfterInstall: "LambdaFunctionToValidateAfterInstall"
-  - AfterAllowTestTraffic: "BlueGreenBeforeAllowTrafficHook"
+#  - AfterAllowTestTraffic: "BlueGreenBeforeAllowTrafficHook"
 #  - BeforeAllowTraffic: "BlueGreenBeforeAllowTrafficHook"
 #  - AfterAllowTraffic: "LambdaFunctionToValidateAfterAllowingProductionTraffic"

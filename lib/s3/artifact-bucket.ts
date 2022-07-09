@@ -12,7 +12,7 @@ export class EcsBlueGreenArtifactBucket extends Construct {
         super(scope, id);
 
         // S3 bucket for storing the code pipeline artifacts
-        this.artifactsBucket = new s3.Bucket(this, 'artifactsBucket', {
+        this.artifactsBucket = new s3.Bucket(this, 'artifactBucket', {
             encryption: BucketEncryption.S3_MANAGED,
             blockPublicAccess: BlockPublicAccess.BLOCK_ALL
         });
