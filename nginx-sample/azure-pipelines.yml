@@ -54,7 +54,7 @@ stages:
           sed -i 's@TASK_ROLE@'$(AWS_ECS_TASK_ROLE_ARN)'@g' nginx-sample/taskdef.json
 
           # Register Task Definition
-          export TASK_DEFINITION_OUTPUT=$(aws ecs register-task-definition --family  nginx-sample --cli-input-json file://nginx-sample/taskdef.json )
+          export TASK_DEFINITION_OUTPUT=$(aws ecs register-task-definition --family  nginx --cli-input-json file://nginx-sample/taskdef.json )
           echo "Task Definition Output =>" $TASK_DEFINITION_OUTPUT
           export TASK_DEFINITION_ARN=$(echo $TASK_DEFINITION_OUTPUT | jq -r '.taskDefinition.taskDefinitionArn')
           echo "Registered ECS Task Definition Arn: " $TASK_DEFINITION_ARN
