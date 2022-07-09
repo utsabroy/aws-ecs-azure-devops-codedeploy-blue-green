@@ -65,7 +65,7 @@ stages:
           # Update Create Deployment
           sed -i 's@BUILD_ID@'$(Build.BuildId)'@g' nginx-sample/create-deployment.json 
           sed -i 's@CODE_DEPLOY_APPLICATION_NAME@'$(AWS_CODE_DEPLOY_APPLICATION_NAME)'@g' nginx-sample/create-deployment.json 
-          sed -i 's@CODE_DEPLOY_GROUP_NAME@'$(AWS_CODE_DEPLOY_APPLICATION_NAME)'@g' nginx-sample/create-deployment.json 
+          sed -i 's@CODE_DEPLOY_GROUP_NAME@'$(AWS_CODE_DEPLOY_GROUP_NAME)'@g' nginx-sample/create-deployment.json 
       env:
         AWS_ACCESS_KEY_ID: $(AWS_ACCESS_KEY_ID)
         AWS_SECRET_ACCESS_KEY: $(AWS_SECRET_ACCESS_KEY)
