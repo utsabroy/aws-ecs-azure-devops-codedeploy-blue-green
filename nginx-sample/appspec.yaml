@@ -8,7 +8,7 @@ Resources:
       Properties:
         TaskDefinition: "TASK_DEFINITION"
         LoadBalancerInfo:
-          ContainerName: "nginx-sample"
+          ContainerName: "API_NAME"
           ContainerPort: 80
 Hooks:
 #  - BeforeInstall: "LambdaFunctionToValidateBeforeInstall"

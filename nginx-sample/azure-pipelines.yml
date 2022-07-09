@@ -61,6 +61,7 @@ stages:
           
           # Update AppSpec
           echo Updating appsec.yaml with Task Definition Arn: $TASK_DEFINITION_ARN
+          sed -i 's@API_NAME@'$(AWS_SERVICE_NAME)'@g' nginx-sample/appspec.yaml
           sed -i 's@TASK_DEFINITION@'$TASK_DEFINITION_ARN'@g' nginx-sample/appspec.yaml
           
           # Update Create Deployment
