@@ -116,7 +116,7 @@ stages:
               DEPLOYMENT_SUCCESS="true"
               echo "Deployment Completed."
               break
-            elif [[ $DEPLOYMENT_STATUS = 'Failed']] || [[ $DEPLOYMENT_STATUS = 'Stopped']]; then
+            elif [[ $DEPLOYMENT_STATUS = 'Failed' || $DEPLOYMENT_STATUS = 'Stopped']]; then
               echo "Deployment " $DEPLOYMENT_STATUS
               break
             else
