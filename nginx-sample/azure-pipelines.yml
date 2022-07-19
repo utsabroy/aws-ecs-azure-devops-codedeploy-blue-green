@@ -131,10 +131,10 @@ stages:
             echo "ERROR:  Deployment Failed . Please check CodeDeploy Console"
             exit 1
           fi
-        env:
-          AWS_ACCESS_KEY_ID: $(AWS_ACCESS_KEY_ID)
-          AWS_SECRET_ACCESS_KEY: $(AWS_SECRET_ACCESS_KEY)
-          AWS_DEFAULT_REGION: $(AWS_REGION)
+      env:
+        AWS_ACCESS_KEY_ID: $(AWS_ACCESS_KEY_ID)
+        AWS_SECRET_ACCESS_KEY: $(AWS_SECRET_ACCESS_KEY)
+        AWS_DEFAULT_REGION: $(AWS_REGION)
 
 
 
