@@ -26,6 +26,7 @@ export class AzureDevopsUser extends Construct {
         "codedeploy:ContinueDeployment",
         "codedeploy:GetDeploymentConfig",
         "codedeploy:RegisterApplicationRevision",
+        "codedeploy:GetDeployment"
       ],
       resources: ['*'],
     });
