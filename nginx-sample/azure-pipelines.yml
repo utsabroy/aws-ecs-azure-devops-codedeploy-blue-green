@@ -110,7 +110,7 @@ stages:
             GET_DEPLOYMENT_OUTPUT=$(aws deploy get-deployment \
               --deployment-id  $DEPLOYMENT_ID)
 
-            DEPLOYMENT_STATUS=$(echo $GET_DEPLOYMENT_OUTPUT | jq '.deploymentInfo.status')
+            DEPLOYMENT_STATUS=$(echo $GET_DEPLOYMENT_OUTPUT | jq -r '.deploymentInfo.status')
 
             if [[ $DEPLOYMENT_STATUS = 'Succeeded' ]]; then
               DEPLOYMENT_SUCCESS="true"
