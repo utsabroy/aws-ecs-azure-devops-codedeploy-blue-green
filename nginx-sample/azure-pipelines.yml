@@ -112,15 +112,15 @@ stages:
 
             DEPLOYMENT_STATUS=$(echo $GET_DEPLOYMENT_OUTPUT | jq '.status')
 
-            if [[ $DEPLOYMENT_STATUS = 'Succeeded']]; then
+            if [[ $DEPLOYMENT_STATUS = 'Succeeded' ]]; then
               DEPLOYMENT_SUCCESS="true"
               echo "Deployment Completed."
               break
-            elif [[ $DEPLOYMENT_STATUS = 'Failed' || $DEPLOYMENT_STATUS = 'Stopped']]; then
+            elif [[ $DEPLOYMENT_STATUS = 'Failed' || $DEPLOYMENT_STATUS = 'Stopped' ]]; then
               echo "Deployment " $DEPLOYMENT_STATUS
               break
             else
-              echo "New Task Set Status: $DEPLOYMENT_STATUS"
+              echo "Deployment Status: $DEPLOYMENT_STATUS"
             fi
 
             sleep $SLEEP_INTERVAL
